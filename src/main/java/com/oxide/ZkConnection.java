@@ -12,6 +12,7 @@ import org.apache.zookeeper.ZooKeeper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -89,6 +90,8 @@ public class ZkConnection {
             return;
         }
         Object property = propertyKey.get(key);
+        Representer representer = new Representer();
+        representer.getPropertyUtils().setSkipMissingProperties(true);
         Object o = yaml.loadAs(value, property.getClass());
         BeanUtils.copyProperties(o, property);
     }
